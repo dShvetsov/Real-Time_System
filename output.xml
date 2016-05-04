@@ -1,0 +1,10 @@
+<trace>
+  <job name="job3" time="0"/>
+  <job name="job6" time="130"/>
+  <job name="job8" time="100"/>
+  <job name="job2" time="20"/>
+  <job name="job4" time="85"/>
+  <job name="job7" time="120"/>
+  <job name="job1" time="30"/>
+  <unsched name="job5"/>
+</trace>
