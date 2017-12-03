@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<system>
+    <task name="Task1" period="840" deadline="730" duration="55"/>
+    <task name="Task2" period="12600" deadline="10660" duration="561"/>
+    <task name="Task3" period="6300" deadline="5680" duration="513"/>
+    <task name="Task4" period="1800" deadline="1610" duration="26"/>
+    <task name="Task5" period="90000" deadline="86290" duration="1304"/>
+    <task name="Task6" period="8400" deadline="7080" duration="645"/>
+    <task name="Task7" period="63000" deadline="60380" duration="3745"/>
+    <task name="Task8" period="6300" deadline="5140" duration="458"/>
+    <task name="Task9" period="12600" deadline="11760" duration="53"/>
+    <task name="Task10" period="2100" deadline="1960" duration="53"/>
+    <task name="Task11" period="1800" deadline="1460" duration="44"/>
+    <task name="Task12" period="840" deadline="690" duration="70"/>
+    <task name="Task13" period="70000" deadline="64240" duration="2569"/>
+    <task name="Task14" period="6300" deadline="6070" duration="153"/>
+    <task name="Task15" period="1260" deadline="1050" duration="3"/>
+    <task name="Task16" period="70000" deadline="57000" duration="3012"/>
+    <task name="Task17" period="630" deadline="560" duration="37"/>
+    <task name="Task18" period="2520" deadline="2220" duration="174"/>
+    <task name="Task19" period="1800" deadline="1640" duration="74"/>
+    <task name="Task20" period="126000" deadline="115690" duration="13598"/>
+    <task name="Task21" period="4200" deadline="3760" duration="141"/>
+    <task name="Task22" period="1400" deadline="1170" duration="21"/>
+    <task name="Task23" period="1400" deadline="1150" duration="76"/>
+</system>
