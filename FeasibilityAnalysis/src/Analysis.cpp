@@ -140,7 +140,6 @@ int main(int argc, char* argv[]) {
         }
         Tasks tasks(argv[1]);
         double lmax = tasks.lmax();
-        std::cout << "lmax : " << lmax << ". ";
         bool feasible = true;
         int left = 0, right = 0;
         for (int L = 1; L <= lmax; L++) {
@@ -150,9 +149,8 @@ int main(int argc, char* argv[]) {
                 break;
             }
         }
-        if (feasible) {
-            std::cout << "YES" << std::endl;
-        } else {
+        std::cout << (feasible ? "YES" : "NO") << std::endl;
+        if (not feasible) {
             right = left;
             unsigned long long lcm_period = tasks.period_lcm();
             bool is_inf = false;
@@ -163,11 +161,11 @@ int main(int argc, char* argv[]) {
                 }
                 right++;
             }
-            std::cout << "NO " << left << " " << (is_inf ? "Inf" : std::to_string(right)) << std::endl;
+            std::cout << left << " " << (is_inf ? "Inf" : std::to_string(right)) << std::endl;
         }
     }
     catch (std::exception &e) {
-        std::cerr << e.what();
+        std::cerr << e.what() << std::endl;
     }
     return 0;
 }
