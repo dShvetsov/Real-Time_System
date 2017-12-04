@@ -2,6 +2,7 @@
 #include <cmath>
 #include <exception>
 #include <iostream>
+#include <numeric>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -117,6 +118,15 @@ public:
         return o;
     }
 
+    unsigned long long period_lcm() const
+    {
+        using std::lcm;
+        unsigned long long cur_lcm = 1;
+        for (const auto& t : m_tasks) {
+            cur_lcm = lcm(cur_lcm, t.period);
+        }
+        return cur_lcm;
+    }
 private:
     tasks_t m_tasks;
     mutable double m_util = -1;
@@ -143,10 +153,17 @@ int main(int argc, char* argv[]) {
             std::cout << "YES" << std::endl;
         } else {
             right = left;
+            unsigned long long lcm_period = tasks.period_lcm();
+            bool is_inf = false;
+            std::cout << "lcm deadline is " << lcm_period << std::endl;
             while (tasks.g_from_zero_to(right) > right) {
+                if (right > lcm_period * 2) {
+                    is_inf = true;
+                    break;
+                }
                 right++;
             }
-            std::cout << "NO " << left << " " << right << std::endl;
+            std::cout << "NO " << left << " " << (is_inf ? "Inf" : std::to_string(right)) << std::endl;
         }
     }
     catch (std::exception &e) {
