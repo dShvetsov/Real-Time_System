@@ -129,16 +129,25 @@ int main(int argc, char* argv[]) {
             throw std::invalid_argument("Need to pass filename of input file");
         }
         Tasks tasks(argv[1]);
-        std::cout << "Utilization : " << tasks.util() << std::endl;
-        double lmax = tasks.lmax();
+        int lmax = tasks.lmax();
+        bool feasible = true;
+        int left = 0, right = 0;
         for (int L = 1; L <= lmax; L++) {
-            std::cout << "g(0, L) " <<  tasks.g_from_zero_to(L) << " L : " << L << std::endl;
             if (tasks.g_from_zero_to(L) > L) {
-                std::cout << "NO" << std::endl;
-                return 0;
+                feasible = false;
+                left = L;
+                break;
             }
         }
-        std::cout << "YES" << std::endl;
+        if (feasible) {
+            std::cout << "YES" << std::endl;
+        } else {
+            right = left;
+            while (tasks.g_from_zero_to(right) > right) {
+                right++;
+            }
+            std::cout << "NO " << left << " " << right << std::endl;
+        }
     }
     catch (std::exception &e) {
         std::cerr << e.what();
