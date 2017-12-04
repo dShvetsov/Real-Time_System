@@ -88,17 +88,17 @@ public:
 
     double lmax() const
     {
-        if ( std::abs(util() - 1) < 0.00001 ) {
-            throw std::logic_error("Upper bound not defined for U=1");
+        if ( util() > 1 - 0.00001 ) {
+            return period_lcm();
+        } else {
+            double acc = 0;
+            for (const auto& t : m_tasks) {
+                acc += ((t.period - t.deadline) * t.duration / double(t.period));
+            }
+            auto max_deadline = std::max_element(m_tasks.begin(), m_tasks.end(),
+                    [](const auto& one, const auto& two){return one.deadline < two.deadline; });
+            return std::max(double(max_deadline->deadline), acc / (1 - util()));
         }
-
-        double acc = 0;
-        for (const auto& t : m_tasks) {
-            acc += ((t.period - t.deadline) * t.duration / double(t.period));
-        }
-        auto max_deadline = std::max_element(m_tasks.begin(), m_tasks.end(),
-                [](const auto& one, const auto& two){return one.deadline < two.deadline; });
-        return std::max(double(max_deadline->deadline), acc / (1 - util()));
     }
 
     int g_from_zero_to(int L) const {
@@ -107,15 +107,6 @@ public:
             g += std::floor((L - t.deadline + t.period) / double(t.period)) * t.duration;
         }
         return g;
-    }
-
-    friend std::ostream& operator<<(std::ostream& o, const Tasks& tasks)
-    {
-        for (const auto& t : tasks.m_tasks) {
-            o << t.name << " : period " << t.period << " deadline " << t.deadline <<
-                " duration " << t.duration << std::endl;
-        }
-        return o;
     }
 
     unsigned long long period_lcm() const
@@ -127,6 +118,16 @@ public:
         }
         return cur_lcm;
     }
+
+    friend std::ostream& operator<<(std::ostream& o, const Tasks& tasks)
+    {
+        for (const auto& t : tasks.m_tasks) {
+            o << t.name << " : period " << t.period << " deadline " << t.deadline <<
+                " duration " << t.duration << std::endl;
+        }
+        return o;
+    }
+
 private:
     tasks_t m_tasks;
     mutable double m_util = -1;
