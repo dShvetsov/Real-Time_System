@@ -94,7 +94,7 @@ public:
 
         double acc = 0;
         for (const auto& t : m_tasks) {
-            acc += (t.period - t.deadline) * t.duration / double(t.period);
+            acc += ((t.period - t.deadline) * t.duration / double(t.period));
         }
         auto max_deadline = std::max_element(m_tasks.begin(), m_tasks.end(),
                 [](const auto& one, const auto& two){return one.deadline < two.deadline; });
@@ -139,7 +139,8 @@ int main(int argc, char* argv[]) {
             throw std::invalid_argument("Need to pass filename of input file");
         }
         Tasks tasks(argv[1]);
-        int lmax = tasks.lmax();
+        double lmax = tasks.lmax();
+        std::cout << "lmax : " << lmax << ". ";
         bool feasible = true;
         int left = 0, right = 0;
         for (int L = 1; L <= lmax; L++) {
@@ -155,7 +156,6 @@ int main(int argc, char* argv[]) {
             right = left;
             unsigned long long lcm_period = tasks.period_lcm();
             bool is_inf = false;
-            std::cout << "lcm deadline is " << lcm_period << std::endl;
             while (tasks.g_from_zero_to(right) > right) {
                 if (right > lcm_period * 2) {
                     is_inf = true;
