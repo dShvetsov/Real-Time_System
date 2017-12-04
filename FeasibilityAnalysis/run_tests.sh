@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
 
-if [ $# -lt 1 ] ; then
-    echo "Give programm to test"
-    exit 1
-fi
-
 yesno_single_test() {
     test_file=$1
     expected_answer=$2
@@ -16,7 +11,7 @@ yesno_single_test() {
         ret=1
     fi
     echo -en "Test : $test_file : [ $result ] \n"
-    return 0
+    return $ret
 }
 
 yesno_test_dir() {
@@ -31,7 +26,7 @@ yesno_test_dir() {
     done
 }
 
-export program=$1
+export program=${1:-./prog_02170483_521}
 test_dir="testdata"
 export total=0
 export failed=0
