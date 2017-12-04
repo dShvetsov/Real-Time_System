@@ -74,9 +74,11 @@ public:
         : m_tasks(std::move(parseXmlFile(filename)))
     { }
 
+    // The utilisation of the task set.
     double util() const
     {
         if (m_util >= 0) {
+            // Use cached value
             return m_util;
         }
         m_util = 0;
@@ -88,19 +90,23 @@ public:
 
     double lmax() const
     {
+        // If U > 1 -- use lcm of tasks period
         if ( util() > 1 - 0.00001 ) {
             return period_lcm();
         } else {
+            // else compute L_a
             double acc = 0;
             for (const auto& t : m_tasks) {
                 acc += ((t.period - t.deadline) * t.duration / double(t.period));
             }
+            // Find task with max deadline
             auto max_deadline = std::max_element(m_tasks.begin(), m_tasks.end(),
                     [](const auto& one, const auto& two){return one.deadline < two.deadline; });
             return std::max(double(max_deadline->deadline), acc / (1 - util()));
         }
     }
 
+    // g(0, L)
     int g_from_zero_to(int L) const {
         int g = 0;
         for (const auto& t : m_tasks) {
@@ -109,6 +115,7 @@ public:
         return g;
     }
 
+    // Compute lcm of periods
     unsigned long long period_lcm() const
     {
         using std::lcm;
@@ -139,12 +146,13 @@ int main(int argc, char* argv[]) {
         if (argc < 2) {
             throw std::invalid_argument("Need to pass filename of input file");
         }
-        Tasks tasks(argv[1]);
-        double lmax = tasks.lmax();
+        Tasks tasks(argv[1]); // read task from file
+        double lmax = tasks.lmax(); // compute lmax
         bool feasible = true;
         int left = 0, right = 0;
         for (int L = 1; L <= lmax; L++) {
             if (tasks.g_from_zero_to(L) > L) {
+                // Ooops, this task set is not feasible
                 feasible = false;
                 left = L;
                 break;
@@ -152,6 +160,7 @@ int main(int argc, char* argv[]) {
         }
         std::cout << (feasible ? "YES" : "NO") << std::endl;
         if (not feasible) {
+            // Ok, now compute right board
             right = left;
             unsigned long long lcm_period = tasks.period_lcm();
             bool is_inf = false;
@@ -162,7 +171,8 @@ int main(int argc, char* argv[]) {
                 }
                 right++;
             }
-            std::cout << left << " " << (is_inf ? "Inf" : std::to_string(right)) << std::endl;
+            std::cout << left << " " << std::endl <<
+                (is_inf ? "Inf" : std::to_string(right)) << std::endl;
         }
     }
     catch (std::exception &e) {
