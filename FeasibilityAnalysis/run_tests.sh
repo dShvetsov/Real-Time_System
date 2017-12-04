@@ -3,14 +3,15 @@
 yesno_single_test() {
     test_file=$1
     expected_answer=$2
-    if [ -n "$($program $test_file | grep $expected_answer)"  ] ; then
+    prog_answer=$($program $test_file)
+    if [ -n "$(echo $prog_answer | grep $expected_answer)"  ] ; then
         result="\033[32m OK \033[0m"
         ret=0
     else
         result="\033[31m FAILED \033[0m"
         ret=1
     fi
-    echo -en "Test : $test_file : [ $result ] \n"
+    echo -en "Test : $test_file : [ $result ] - $prog_answer \n"
     return $ret
 }
 
